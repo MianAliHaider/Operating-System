@@ -30,15 +30,14 @@
     Single Command Execution: Supports execution of single commands like ls, echo hello, etc.
     Pipeline Support: Allows executing multiple commands connected by a pipe, like ls | grep ".c" | sort.
     Memory Management: Handles dynamic memory allocation and cleanup for commands and their arguments. 
-    main() Function
+    main():
         The shell prompt (PUCITshell:- ) is displayed, and user input is read via read_cmd().
         User input is split by the | character to handle pipelines.
         Each segment between the | is considered a separate command.
         The commands are tokenized (split into individual arguments) using tokenize().
         execute_pipeline() is called to execute the pipeline.
         Dynamically allocated memory for commands is freed after execution.
-
-    execute_pipeline() Function
+    execute_pipeline(): 
         Takes an array of commands (each command itself is an array of arguments) and the count of commands.
         Sets up a pipeline using pipes (pipe() system call) and forks a child process for each command.
         For the first command, it reads from standard input.
@@ -47,23 +46,19 @@
         Uses dup2() to redirect standard input/output as needed.
         Closes unused ends of pipes to prevent resource leaks.
         Waits for all child processes to complete with waitpid().
-            
-    execute_single() Function
+    execute_single():
         Executes a single command with optional I/O redirection.
         Handles input and output file descriptors.
         Uses fork() to create a child process, dup2() for redirection, and execvp() to execute the command.
-
-    tokenize() Function
+    tokenize():
         Converts a command line string into an array of arguments.
         Uses strtok() to split the input string by spaces.
         Allocates memory for each argument and returns a NULL-terminated list of strings (arglist).
-        
-    read_cmd() Function
+    read_cmd():
         Reads user input from the shell prompt.
         Handles end-of-file (Ctrl+D) to gracefully exit the shell.
         Stores the input in a dynamically allocated buffer and returns it.
-        
-    Memory Management Functions
+    Memory Management:
         free_tokens(): Frees memory allocated for tokenized command arguments.
         free_pipeline(): Frees memory for the entire pipeline of commands.
         pipe(int fd[2]): Creates a unidirectional data channel (pipe). fd[0] is for reading, and fd[1] is for writing.
