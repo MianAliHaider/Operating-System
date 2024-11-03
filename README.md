@@ -136,6 +136,7 @@
         	int saved_errno = errno;: Saves the current value of errno to preserve its state because waitpid() can modify it.
         	while (waitpid(-1, NULL, WNOHANG) > 0);: Calls waitpid() in a loop to reap any terminated child processes without blocking. The -1 argument makes it 	wait for             any child process. WNOHANG makes it return immediately if no child has exited.
         	errno = saved_errno: Restores errno to its original value after cleaning up the child processes.
+        
         tokenize():
         	This function splits a command line into individual arguments.
         	Allocates an array of pointers (arglist) to hold each argument. The size is MAXARGS + 1 to accommodate the null terminator.
@@ -143,6 +144,7 @@
         	The function uses strtok to split the cmdline string into tokens based on spaces.
         	It copies each token into the arglist until MAXARGS is reached or there are no more tokens.
         	arglist[argnum] = NULL;: Terminates the list with a NULL pointer to signify the end of arguments.
+        
         read_cmd():
         	This function reads a line of input from the user, displaying a prompt.
         	Displays the prompt using printf.
@@ -150,14 +152,39 @@
         	The function reads characters one by one until a newline (\n) or EOF is encountered.
         	If EOF is reached and no characters have been read (pos == 0), it returns NULL (indicating end-of-file, such as when the user presses Ctrl+D).
         	The command line is null-terminated before returning it.
+        
         free_tokens():
         	This function frees the memory allocated for an array of argument tokens.
         	Iterates through the tokens array and frees each individual argument string.
         	Finally, it frees the array of pointers itself.
+        
         free_pipeline():
         	This function frees memory allocated for a pipeline of commands.
         	Iterates through each command in the cmds array and calls free_tokens to clean up memory for the tokens associated with that command.
+
+**version04(myshellv4.c):**
+
+        rest of the code is same as version03.Some additional features were added:
         
+        add_to_history():
+            If the command_history array has space (i.e., history_count is less than HISTORY_SIZE), it copies cmd into the next available slot in the array.
+            If the array is full:
+                It frees the memory of the oldest command (at command_history[0]).
+                It shifts all commands up by one index, making space at the end of the array.
+                It adds the new command at the last index
         
+        get_history_command():
+            If the index is valid (i.e., 0 <= index < history_count), it returns the command at that index in command_history.
+            If the index is invalid, it returns NULL.
+
+**version05(myshellv5.c):**
+
+        rest of the code is same but we add new features like:
+        1- cd for changing directory
+        2- kill
+        3- help
+        4- exit
+        5- jobs
+
         
         
